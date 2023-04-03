@@ -50,15 +50,21 @@ import { getWcStorybookHelpers } from "wc-storybook-helpers";
 Pass your element's tag name into the Storybook helper function.
 
 ```js
-const { events, argTypes, template } = getWcStorybookHelpers("my-element");
+const {
+  events,
+  args, // for Storybook 7
+  argTypes,
+  template
+} = getWcStorybookHelpers("my-element");
 ```
 
-Add the `argTypes` and `events` to your story config:
+Add the `args`, `argTypes` and `events` to your story config:
 
 ```js
 export default {
   title: "Components/My Element",
   component: "my-element",
+  args, // for Storybook 7
   argTypes,
   parameters: {
     actions: {
