@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/break-stuff/wc-storybook-helpers.git"
+    "url": "git+https://github.com/mariohamann/wc-storybook-helpers.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/break-stuff/wc-storybook-helpers/issues"
+    "url": "https://github.com/mariohamann/wc-storybook-helpers/issues"
   },
-  "homepage": "https://github.com/break-stuff/wc-storybook-helpers#readme",
+  "homepage": "https://github.com/mariohamann/wc-storybook-helpers#readme",
   "keywords": [
     "web-components",
     "web components",
