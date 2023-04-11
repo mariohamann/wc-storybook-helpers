@@ -8,7 +8,7 @@ export function getComponentByTagName(
   const module = (
     customElementsManifest as CustomElementsManifest
   ).modules?.find((m) => m.declarations?.some((d) => d.tagName === tagName));
-  
+
   return module?.declarations.find(
     (x) => x.kind === "class" && x.tagName === tagName
   );
@@ -117,8 +117,8 @@ export function getReactProperties(component?: Declaration): ArgTypes {
         defaultValue === "false"
           ? false
           : defaultValue === "''"
-          ? ""
-          : defaultValue,
+            ? ""
+            : defaultValue,
       control: {
         type: getControl(propType),
       },
@@ -191,6 +191,8 @@ export function getCssParts(component?: Declaration): ArgTypes {
       name: part.name,
       description: getDescription(part.description, `${part.name}-part`),
       control: "text",
+      defaultValue: `${component?.tagName}::part(${part.name}) {
+}`,
       table: {
         category: "css shadow parts",
       },
@@ -216,6 +218,9 @@ export function getSlots(component?: Declaration): ArgTypes {
       name: slotName,
       description: getDescription(slot.description, `${slotName}-slot`),
       control: "text",
+      defaultValue: slotName === "default"
+        ? ''
+        : `<span slot="${slotName}"></span>`,
       table: {
         category: "slots",
       },

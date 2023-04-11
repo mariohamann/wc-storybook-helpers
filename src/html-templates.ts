@@ -31,9 +31,7 @@ export function getTemplate(
 
   return html`${getStyleTemplate(component, args)}
 <${unsafeStatic(component!.tagName!)} ${spread(operators)}>
-  ${slotsTemplate}
-  ${slot || ""}
-</${unsafeStatic(component!.tagName!)}>
+${slotsTemplate}${slot || ""}</${unsafeStatic(component!.tagName!)}>
 
 <script>
   component = document.querySelector('${component!.tagName!}');
@@ -45,7 +43,7 @@ export function getStyleTemplate(component?: Declaration, args?: any) {
   const cssPropertiesTemplate = getCssPropTemplate(component!, args);
   const cssPartsTemplate = getCssPartsTemplate(component!, args);
 
-  return cssPropertiesTemplate || cssPartsTemplate ? html`<style>${cssPropertiesTemplate}${cssPartsTemplate}</style>
+  return `${cssPropertiesTemplate}${cssPartsTemplate}`.replaceAll(/\s+/g, "") != '' ? html`<style>${cssPropertiesTemplate}${cssPartsTemplate}</style>
 ` : '';
 }
 
@@ -129,10 +127,7 @@ function getCssPartsTemplate(component: Declaration, args: any) {
       .map((key) => {
         const cssPartName = cssParts[key].name;
         const cssPartValue = args![key];
-        return cssPartValue ? `
-  ${component?.tagName}::part(${cssPartName}) {
-    ${cssPartValue || ""}
-  }` : null;
+        return cssPartValue.replaceAll(/\s+/g, "") !== `${component?.tagName}::part(${cssPartName}){}` ? `\n${cssPartValue}` : null;
       })
       .filter((value) => value !== null)
       .join("\n")}
@@ -152,11 +147,9 @@ function getSlotsTemplate(component: Declaration, args: any) {
         const slotName = slots[key].name;
         const slotValue = args![key];
 
-        return slotValue
-          ? slotName === "default"
-            ? `${slotValue || ""}`
-            : `<div slot="${slotName}">${slotValue || ""}</div>`
-          : null;
+        return slotName === "default"
+          ? slotValue || null
+          : slotValue !== `<span slot="${slotName}"></span>` ? slotValue : null;
       })
       .filter((value) => value !== null)
       .join("\n")}`
