@@ -14,7 +14,9 @@ export function getComponentByTagName(
   );
 }
 
-export function getAttributesAndProperties(component?: Declaration): ArgTypes {
+export function getAttributesAndProperties(component?: Declaration, options?: {
+  showArgRef?: boolean;
+}): ArgTypes {
   const properties: ArgTypes = {};
 
   component?.members?.forEach((member) => {
@@ -56,7 +58,7 @@ export function getAttributesAndProperties(component?: Declaration): ArgTypes {
       name: member.attribute || member.name,
       description: getDescription(
         member.description,
-        propName,
+        options?.showArgRef ? propName : '',
         member.deprecated
       ),
       defaultValue: defaultValue === "''" ? "" : defaultValue,
@@ -176,7 +178,9 @@ export function getCssProperties(component?: Declaration): ArgTypes {
   return properties;
 }
 
-export function getCssParts(component?: Declaration): ArgTypes {
+export function getCssParts(component?: Declaration, options?: {
+  showArgRef?: boolean;
+}): ArgTypes {
   const parts: ArgTypes = {};
 
   component?.cssParts?.forEach((part) => {
@@ -189,7 +193,7 @@ export function getCssParts(component?: Declaration): ArgTypes {
 
     parts[`${part.name}-part`] = {
       name: part.name,
-      description: getDescription(part.description, `${part.name}-part`),
+      description: getDescription(part.description, options?.showArgRef ? `${part.name}-part` : '',),
       control: "text",
       defaultValue: `${component?.tagName}::part(${part.name}) {
 }`,
@@ -202,7 +206,9 @@ export function getCssParts(component?: Declaration): ArgTypes {
   return parts;
 }
 
-export function getSlots(component?: Declaration): ArgTypes {
+export function getSlots(component?: Declaration, options?: {
+  showArgRef?: boolean;
+}): ArgTypes {
   const slots: ArgTypes = {};
 
   component?.slots?.forEach((slot) => {
@@ -216,7 +222,7 @@ export function getSlots(component?: Declaration): ArgTypes {
     const slotName = slot.name || "default";
     slots[`${slotName}-slot`] = {
       name: slotName,
-      description: getDescription(slot.description, `${slotName}-slot`),
+      description: getDescription(slot.description, options?.showArgRef ? `${slotName}-part` : '',),
       control: "text",
       defaultValue: slotName === "default"
         ? ''
@@ -272,16 +278,23 @@ function getDescription(
   argRef?: string,
   deprecated?: string
 ) {
+
   let desc = "";
   if (deprecated) {
-    desc += `\`@deprecated\` ${deprecated}\n\n\n`;
+    desc += `\`@deprecated\` ${deprecated}`;
   }
 
   if (description) {
-    desc += `${description}\n\n`;
+    desc += desc ? "\n\n\n" : ""; // Add linebreaks if there is a deprecated message
+    desc += description;
   }
 
-  return (desc += `arg ref - \`${argRef}\``);
+  if (argRef) {
+    desc += desc ? "\n\n" : ""; // Add linebreaks if there there is a description or deprecated message
+    desc += `arg ref - \`${argRef}\``;
+  }
+
+  return (desc);
 }
 
 export const getReactEventName = (eventName: string) =>

@@ -17,7 +17,9 @@ import { Declaration } from "./cem-schema";
  * @param tagName the tag name referenced in the Custom Elements Manifest
  * @returns An object containing the argTypes, reactArgTypes, events, styleTemplate, and template
  */
-export function getWcStorybookHelpers(tagName: string) {
+export function getWcStorybookHelpers(tagName: string, options?: {
+  showArgRef?: boolean;
+}) {
   /**
    *
    * uses the global window.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__
@@ -36,7 +38,7 @@ export function getWcStorybookHelpers(tagName: string) {
   const eventNames = component?.events?.map((event) => event.name) || [];
 
   return {
-    argTypes: getArgTypes(component),
+    argTypes: getArgTypes(component, { showArgRef: options?.showArgRef }),
     reactArgTypes: getReactProps(component),
     args: getArgs(component),
     events: eventNames,
@@ -46,12 +48,14 @@ export function getWcStorybookHelpers(tagName: string) {
   };
 }
 
-function getArgTypes(component?: Declaration): ArgTypes {
+function getArgTypes(component?: Declaration, options?: {
+  showArgRef?: boolean;
+}): ArgTypes {
   const argTypes: ArgTypes = {
-    ...getAttributesAndProperties(component),
-    ...getSlots(component),
+    ...getAttributesAndProperties(component, { showArgRef: options?.showArgRef }),
+    ...getSlots(component, { showArgRef: options?.showArgRef }),
     ...getCssProperties(component),
-    ...getCssParts(component),
+    ...getCssParts(component, { showArgRef: options?.showArgRef }),
   };
 
   return argTypes;

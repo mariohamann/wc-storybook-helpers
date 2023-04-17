@@ -51,26 +51,34 @@ Pass your element's tag name into the Storybook helper function.
 
 ```js
 const {
-  events,
-  args, // for Storybook 7
-  argTypes,
-  template
-} = getWcStorybookHelpers("my-element");
+	events,
+	args, // for Storybook 7
+	argTypes,
+	template,
+} = getWcStorybookHelpers("my-element", {
+	/* options */
+});
+```
+
+You can set the following option:
+
+```js
+showArgRef: boolean; // default: false; show the arg ref in the description
 ```
 
 Add the `args`, `argTypes` and `events` to your story config:
 
 ```js
 export default {
-  title: "Components/My Element",
-  component: "my-element",
-  args, // for Storybook 7
-  argTypes,
-  parameters: {
-    actions: {
-      handles: events,
-    },
-  },
+	title: "Components/My Element",
+	component: "my-element",
+	args, // for Storybook 7
+	argTypes,
+	parameters: {
+		actions: {
+			handles: events,
+		},
+	},
 };
 ```
 
@@ -110,7 +118,7 @@ const DefaultTemplate = (args: any) => template(args);
 
 export const Default: any = DefaultTemplate.bind({});
 Default.args = {
-  "docs-hint-attr": "Some other value than the default",
+	"docs-hint-attr": "Some other value than the default",
 };
 ```
 
@@ -128,7 +136,6 @@ oldDocsHint = "Click on the Vite and Lit logos to learn more";
 ```
 
 ![screenshot of storybook control panel with "deprecated" label in the description](https://github.com/break-stuff/wc-storybook-helpers/blob/main/demo/img/deprecated.png?raw=true)
-
 
 ### Overriding Controls
 
@@ -199,19 +206,19 @@ Templates take 2 arguments - story arguments and slot data. You can use the cont
 
 ```ts
 const SelectTemplate = (args: any) =>
-  template(
-    args,
-    html`
-      <span slot="label">My Select</span>
-      <my-option>Option 1</my-option>
-      <my-option>Option 2</my-option>
-      <my-option>Option 3</my-option>
-    `
-  );
+	template(
+		args,
+		html`
+			<span slot="label">My Select</span>
+			<my-option>Option 1</my-option>
+			<my-option>Option 2</my-option>
+			<my-option>Option 3</my-option>
+		`
+	);
 
 export const Default: any = SelectTemplate.bind({});
 Default.args = {
-  "docs-hint-attr": "Some other value than the default",
+	"docs-hint-attr": "Some other value than the default",
 };
 ```
 
@@ -221,19 +228,19 @@ Templates can be interpolated into a template with additional content.
 
 ```ts
 const FormTemplate = (args: any) => html`
-  <form>
-    ${template(
-      args,
-      html`
-        <span slot="label">My Select</span>
-        <my-option>Option 1</my-option>
-        <my-option>Option 2</my-option>
-        <my-option>Option 3</my-option>
-      `
-    )}
+	<form>
+		${template(
+			args,
+			html`
+				<span slot="label">My Select</span>
+				<my-option>Option 1</my-option>
+				<my-option>Option 2</my-option>
+				<my-option>Option 3</my-option>
+			`
+		)}
 
-    <button>Submit</button>
-  </form>
+		<button>Submit</button>
+	</form>
 `;
 ```
 
@@ -241,21 +248,21 @@ The template also exposes a variable named `component` that references the custo
 
 ```ts
 const ComponentTemplate = (args: any) => html`
-  ${template(
-    args,
-    html`
-      <span slot="label">My Select</span>
-      <my-option value="1">Option 1</my-option>
-      <my-option value="2">Option 2</my-option>
-      <my-option value="3">Option 3</my-option>
-    `
-  )}
-  <script>
-    // set property values
-    component.value = "2";
+	${template(
+		args,
+		html`
+			<span slot="label">My Select</span>
+			<my-option value="1">Option 1</my-option>
+			<my-option value="2">Option 2</my-option>
+			<my-option value="3">Option 3</my-option>
+		`
+	)}
+	<script>
+		// set property values
+		component.value = "2";
 
-    // call component methods
-    component.show();
-  </script>
+		// call component methods
+		component.show();
+	</script>
 `;
 ```
