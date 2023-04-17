@@ -1,5 +1,7 @@
 # Storybook Helpers for Web Components
 
+> This is a fork from https://github.com/break-stuff/wc-storybook-helpers. Maybe the original is more up-to-date than this fork.
+
 Helpers designed to make integrating Web Components with Storybook easier.
 
 There are a number of things that this helper library does to provide devs with a better experience with Storybook and Web Components:
