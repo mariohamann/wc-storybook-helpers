@@ -1,6 +1,6 @@
 {
-  "name": "@mariohamann/wc-storybook-helpers",
-  "version": "1.1.0",
+  "name": "wc-storybook-helpers",
+  "version": "1.1.1",
   "description": "Helpers designed to make integrating Web Components with Storybook easier. Fork from https://github.com/break-stuff/wc-storybook-helpers",
   "main": "index.js",
   "types": "index.d.ts",

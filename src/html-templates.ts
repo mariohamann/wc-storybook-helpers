@@ -43,7 +43,7 @@ export function getStyleTemplate(component?: Declaration, args?: any) {
   const cssPropertiesTemplate = getCssPropTemplate(component!, args);
   const cssPartsTemplate = getCssPartsTemplate(component!, args);
 
-  return `${cssPropertiesTemplate}${cssPartsTemplate}`.replaceAll(/\s+/g, "") != '' ? html`<style>${cssPropertiesTemplate}${cssPartsTemplate}</style>
+  return `${cssPropertiesTemplate}${cssPartsTemplate}`?.replaceAll(/\s+/g, "") != '' ? html`<style>${cssPropertiesTemplate}${cssPartsTemplate}</style>
 ` : '';
 }
 
@@ -127,7 +127,7 @@ function getCssPartsTemplate(component: Declaration, args: any) {
       .map((key) => {
         const cssPartName = cssParts[key].name;
         const cssPartValue = args![key];
-        return cssPartValue.replaceAll(/\s+/g, "") !== `${component?.tagName}::part(${cssPartName}){}` ? `\n${cssPartValue}` : null;
+        return cssPartValue?.replaceAll(/\s+/g, "") !== `${component?.tagName}::part(${cssPartName}){}` ? `\n${cssPartValue}` : null;
       })
       .filter((value) => value !== null)
       .join("\n")}
