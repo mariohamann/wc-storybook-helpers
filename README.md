@@ -57,11 +57,13 @@ const {
 	args, // for Storybook 7
 	argTypes,
 	template,
+	manifest, // if you want to use the manifest for something else
 } = getWcStorybookHelpers("my-element", {
 	/* options */
 });
 ```
 
+l
 You can set the following option:
 
 ```js

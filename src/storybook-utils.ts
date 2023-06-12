@@ -45,6 +45,7 @@ export function getWcStorybookHelpers(tagName: string, options?: {
     styleTemplate: (args?: any) => getStyleTemplate(component, args),
     template: (args?: any, slot?: TemplateResult) =>
       getTemplate(component, args, slot),
+    manifest: component,
   };
 }
 
