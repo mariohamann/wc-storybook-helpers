@@ -30,8 +30,7 @@ export function getTemplate(
   syncControls(component!);
 
   return html`${getStyleTemplate(component, args)}
-<${unsafeStatic(component!.tagName!)} ${spread(operators)}>
-${slotsTemplate}${slot || ""}</${unsafeStatic(component!.tagName!)}>
+<${unsafeStatic(component!.tagName!)} ${spread(operators)}>${slotsTemplate}${slot || ""}</${unsafeStatic(component!.tagName!)}>
 
 <script>
   component = document.querySelector('${component!.tagName!}');
@@ -152,7 +151,7 @@ function getSlotsTemplate(component: Declaration, args: any) {
           : slotValue !== `<span slot="${slotName}"></span>` ? slotValue : null;
       })
       .filter((value) => value !== null)
-      .join("\n")}`
+      .join("")}`
   );
 
   return template;
