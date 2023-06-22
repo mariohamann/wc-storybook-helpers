@@ -29,8 +29,11 @@ export function getTemplate(
   const slotsTemplate = getSlotsTemplate(component!, args);
   syncControls(component!);
 
+
+  const cssPropertiesTemplate = getCssPropTemplate(component!, args);
+
   return html`${getStyleTemplate(component, args)}
-<${unsafeStatic(component!.tagName!)} ${spread(operators)}>${slotsTemplate}${slot || ""}</${unsafeStatic(component!.tagName!)}>
+<${unsafeStatic(component!.tagName!)} ${spread(operators)} ${cssPropertiesTemplate}>${slotsTemplate}${slot || ""}</${unsafeStatic(component!.tagName!)}>
 
 <script>
   component = document.querySelector('${component!.tagName!}');
@@ -39,10 +42,9 @@ export function getTemplate(
 }
 
 export function getStyleTemplate(component?: Declaration, args?: any) {
-  const cssPropertiesTemplate = getCssPropTemplate(component!, args);
   const cssPartsTemplate = getCssPartsTemplate(component!, args);
 
-  return `${cssPropertiesTemplate}${cssPartsTemplate}`?.replaceAll(/\s+/g, "") != '' ? html`<style>${cssPropertiesTemplate}${cssPartsTemplate}</style>
+  return `${cssPartsTemplate}`?.replaceAll(/\s+/g, "") != '' ? html`<style>${cssPartsTemplate}</style>
 ` : '';
 }
 
@@ -92,18 +94,14 @@ function getCssPropTemplate(component: Declaration, args: any) {
     return;
   }
 
-  const template = unsafeStatic(`
-  ${component?.tagName} {
-    ${Object.keys(cssProperties)
-      .map((key) => {
-        const cssName = cssProperties[key].name;
-        const cssValue = args![key];
-        return cssValue ? `${cssName}: ${cssValue || ""};` : null;
-      })
-      .filter((value) => value !== null)
-      .join("\n    ")}
-  }
-`);
+  const template = unsafeStatic(`style="${Object.keys(cssProperties)
+    .map((key) => {
+      const cssName = cssProperties[key].name;
+      const cssValue = args![key];
+      return cssValue ? `${cssName}: ${cssValue || ""}` : null;
+    })
+    .filter((value) => value !== null)
+    .join(";")}"`);
 
   return template;
 }
