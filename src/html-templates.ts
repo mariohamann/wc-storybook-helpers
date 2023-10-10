@@ -58,9 +58,11 @@ function getTemplateOperators(component: Declaration, args: any) {
       const attr = attributes[key];
       const attrName = attributes[key].name;
       const attrValue = args![key] as unknown;
-      const prop: string =
-        (attr.control as any).type === "boolean" ? `?${attrName}` : attrName;
-      operators[prop] = attrValue === "false" ? false : attrValue;
+      if (attrValue) {
+        const prop: string =
+          (attr.control as any).type === "boolean" ? `?${attrName}` : attrName;
+        operators[prop] = attrValue === "false" ? false : attrValue;
+      }
     });
 
   Object.keys(args)
@@ -76,11 +78,14 @@ function getTemplateOperators(component: Declaration, args: any) {
       }
 
       const propValue = args![key];
-      operators[`.${key}`] = propValue;
+      if (propValue) {
+        operators[`.${key}`] = propValue;
+      }
     });
 
   return operators;
 }
+
 
 function getCssPropTemplate(component: Declaration, args: any) {
   const cssProperties = getCssProperties(component);
